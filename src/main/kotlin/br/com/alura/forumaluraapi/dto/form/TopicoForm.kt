@@ -1,8 +1,12 @@
 package br.com.alura.forumaluraapi.dto.form
 
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
+
 data class TopicoForm(
-    val titulo: String,
-    val mensagem: String,
-    val idCurso: Long,
-    val idAutor: Long
+    @field:NotEmpty @field:Size(min = 5, max = 100) val titulo: String,
+    @field:NotEmpty @field:Size(min = 10, max = 500) val mensagem: String,
+    @field:NotNull val idCurso: Long,
+    @field:NotNull val idAutor: Long
 )
