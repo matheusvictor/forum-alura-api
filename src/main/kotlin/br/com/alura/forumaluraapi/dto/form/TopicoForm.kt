@@ -1,6 +1,6 @@
-package br.com.alura.forumaluraapi.dto
+package br.com.alura.forumaluraapi.dto.form
 
-data class TopicoDTO(
+data class TopicoForm(
     val titulo: String,
     val mensagem: String,
     val idCurso: Long,
