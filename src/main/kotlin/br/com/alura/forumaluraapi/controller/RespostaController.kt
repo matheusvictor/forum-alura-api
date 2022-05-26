@@ -16,8 +16,8 @@ class RespostaController(private val service: RespostaService) {
     }
 
     @PostMapping
-    fun cadastrar(@RequestBody @Valid dto: RespostaForm) {
-        service.cadastrarResposta(dto)
+    fun cadastrar(@PathVariable id: Long, @RequestBody @Valid dto: RespostaForm) {
+        service.cadastrarResposta(id, dto)
     }
 
 }

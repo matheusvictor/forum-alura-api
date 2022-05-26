@@ -12,7 +12,14 @@ data class UsuarioService(var usuarios: List<Usuario>) {
             nomeUsuario = "Ana da Silva",
             email = "ana@email.com"
         )
-        usuarios = arrayListOf(usuario)
+
+        val usuario2 = Usuario(
+            id = 2,
+            nomeUsuario = "Chico Bento",
+            email = "chicobento@email.com"
+        )
+
+        usuarios = arrayListOf(usuario, usuario2)
     }
 
     fun buscarPorId(id: Long): Usuario {
