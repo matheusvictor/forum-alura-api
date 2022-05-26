@@ -3,6 +3,7 @@ package br.com.alura.forumaluraapi.service
 import br.com.alura.forumaluraapi.dto.form.AtualizacaoTopicoForm
 import br.com.alura.forumaluraapi.dto.form.TopicoForm
 import br.com.alura.forumaluraapi.dto.view.TopicoView
+import br.com.alura.forumaluraapi.exception.NotFoundException
 import br.com.alura.forumaluraapi.mapper.TopicoFormMapper
 import br.com.alura.forumaluraapi.mapper.TopicoViewMapper
 import br.com.alura.forumaluraapi.model.Topico
@@ -13,7 +14,8 @@ import java.util.stream.Collectors
 class TopicoService(
     private var topicos: MutableList<Topico> = mutableListOf(),
     private val topicoViewMapper: TopicoViewMapper,
-    private val topicoFormMapper: TopicoFormMapper
+    private val topicoFormMapper: TopicoFormMapper,
+    private val mensagemNaoEncontrado: String = "Tópico não encontrado"
 ) {
 
     fun listar(): List<TopicoView> {
@@ -24,20 +26,22 @@ class TopicoService(
     }
 
     fun buscarPorId(id: Long): TopicoView {
-        return topicos.stream()
-            .filter { topico ->
-                topico.id == id
-            }.findFirst().get()
-            .let { topico ->
-                topicoViewMapper.converte(topico)
+        val topico = topicos.stream()
+            .filter { t ->
+                t.id == id
+            }.findFirst().orElseThrow {
+                NotFoundException(mensagemNaoEncontrado)
             }
+        return topicoViewMapper.converte(topico)
     }
 
     fun obterTopico(id: Long): Topico {
         return topicos.stream()
             .filter { topico ->
                 topico.id == id
-            }.findFirst().get()
+            }.findFirst().orElseThrow {
+                NotFoundException(mensagemNaoEncontrado)
+            }
     }
 
     fun cadastrarTopico(formDto: TopicoForm): TopicoView {
@@ -50,7 +54,9 @@ class TopicoService(
     fun atualizar(form: AtualizacaoTopicoForm): TopicoView {
         val topico = topicos.stream().filter { t ->
             t.id == form.id
-        }.findFirst().get()
+        }.findFirst().orElseThrow {
+            NotFoundException(mensagemNaoEncontrado)
+        }
         topicos.remove(topico) // remove o tópico que será atualizado/substituído
         val topicoAtualizado = Topico(
             id = form.id,
@@ -69,7 +75,9 @@ class TopicoService(
     fun deletar(id: Long) {
         val topico = topicos.stream().filter { t ->
             t.id == id
-        }.findFirst().get()
+        }.findFirst().orElseThrow {
+            NotFoundException(mensagemNaoEncontrado)
+        }
         topicos.remove(topico)
     }
 
