@@ -52,17 +52,24 @@ class TopicoService(
         }.findFirst().get()
         topicos.remove(topico) // remove o tópico que será atualizado/substituído
         topicos.add( // cria um novo Topico e os atributos que não veem do form, permanecem iguais ao do topico capturado
-                Topico(
-                    id = form.id,
-                    titulo = form.titulo,
-                    mensagem = form.mensagem,
-                    autor = topico.autor,
-                    curso = topico.curso,
-                    respostas = topico.respostas,
-                    status = topico.status,
-                    dataCriacao = topico.dataCriacao
-                )
+            Topico(
+                id = form.id,
+                titulo = form.titulo,
+                mensagem = form.mensagem,
+                autor = topico.autor,
+                curso = topico.curso,
+                respostas = topico.respostas,
+                status = topico.status,
+                dataCriacao = topico.dataCriacao
             )
+        )
+    }
+
+    fun deletar(id: Long) {
+        val topico = topicos.stream().filter { t ->
+            t.id == id
+        }.findFirst().get()
+        topicos.remove(topico)
     }
 
 }
